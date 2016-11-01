@@ -14,8 +14,6 @@ public class MFGT {
         activity.finish();
         activity.overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
     }
-
-
     public static void startActivity(Activity context, Class<?> cls) {
         Intent intent = new Intent();
         intent.setClass(context, cls);
@@ -31,9 +29,11 @@ public class MFGT {
         context.startActivityForResult(intent, requestCode);
         context.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
+
     public static void gotoLogin(Activity context){
         startActivity(context, LoginActivity.class);
     }
+
     public static void gotoRegister(Activity context){
         startActivity(context, RegisterActivity.class);
     }

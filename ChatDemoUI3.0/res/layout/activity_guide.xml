@@ -12,14 +12,14 @@
         android:src="@drawable/icon_logo"
         android:id="@+id/imageView" />
     <Button
+        android:id="@+id/bt_login"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="登录"
         android:background="#2CB80C"
         android:layout_marginTop="130dp"
         android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/bt_login" />
+        android:layout_centerHorizontal="true" />
     <Button
         android:id="@+id/bt_register"
         android:layout_width="150dp"

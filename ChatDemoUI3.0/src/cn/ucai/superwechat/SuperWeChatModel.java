@@ -2,9 +2,6 @@ package cn.ucai.superwechat;
 
 import android.content.Context;
 
-import cn.ucai.superwechat.db.UserDao;
-import cn.ucai.superwechat.domain.RobotUser;
-import cn.ucai.superwechat.utils.PreferenceManager;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;
 
@@ -13,12 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DemoModel {
+import cn.ucai.superwechat.db.UserDao;
+import cn.ucai.superwechat.domain.RobotUser;
+import cn.ucai.superwechat.utils.PreferenceManager;
+
+public class SuperWeChatModel {
     UserDao dao = null;
     protected Context context = null;
     protected Map<Key,Object> valueCache = new HashMap<Key,Object>();
     
-    public DemoModel(Context ctx){
+    public SuperWeChatModel(Context ctx){
         context = ctx;
         PreferenceManager.init(context);
     }
