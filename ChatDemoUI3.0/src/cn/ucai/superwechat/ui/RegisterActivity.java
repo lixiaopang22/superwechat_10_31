@@ -27,11 +27,14 @@ import com.hyphenate.exceptions.HyphenateException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.NetDao;
 import cn.ucai.superwechat.data.OkHttpUtils;
+import cn.ucai.superwechat.utils.CommonUtils;
+import cn.ucai.superwechat.utils.MD5;
 
 /**
  * register screen
@@ -100,10 +103,19 @@ public class RegisterActivity extends BaseActivity {
         NetDao.onRegister(mContext, username, nickName, pwd, new OkHttpUtils.OnCompleteListener<Result>() {
             @Override
             public void onSuccess(Result result) {
-                if(result!=null&&result.isRetMsg() ){
-                    registerAppServer();
+                if(result==null){
+                    pd.dismiss();
                 }else{
-                    unregisterEMServer();
+                    if(result.isRetMsg()){
+                        registerEMServer();
+                    }else{
+                        if(result.getRetCode()== I.MSG_REGISTER_USERNAME_EXISTS){
+                            CommonUtils.showMsgShortToast(result.getRetCode());
+                            pd.dismiss();
+                        }else{
+                            unregisterEMServer();
+                        }
+                    }
                 }
             }
 
@@ -136,7 +148,7 @@ public class RegisterActivity extends BaseActivity {
             public void run() {
                 try {
                     // call method in SDK
-                    EMClient.getInstance().createAccount(username, pwd);
+                    EMClient.getInstance().createAccount(username, MD5.getMessageDigest(pwd));
                     runOnUiThread(new Runnable() {
                         public void run() {
                             if (!RegisterActivity.this.isFinishing())
