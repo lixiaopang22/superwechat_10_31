@@ -25,7 +25,7 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="注册"
-        android:background="#2CB80C"
+        android:background="@drawable/em_button_register_bg"
         android:layout_marginTop="22dp"
         android:layout_below="@+id/bt_login"
         android:layout_alignLeft="@+id/bt_login" />

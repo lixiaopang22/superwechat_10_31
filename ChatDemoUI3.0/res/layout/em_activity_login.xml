@@ -3,20 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eff2f6"
-    android:orientation="vertical" >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:src="@drawable/em_welcom_logo" />
-    </RelativeLayout>
+    android:orientation="vertical"
+    android:layout_marginTop="60dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -95,27 +83,13 @@
             android:orientation="horizontal" >
 
             <Button
+                android:id="@+id/bt_login"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
                 android:layout_marginRight="10dip"
                 android:layout_weight="1"
-                android:background="@drawable/em_button_register_bg"
-                android:gravity="center"
-                android:onClick="register"
-                android:paddingBottom="7dp"
-                android:paddingTop="7dp"
-                android:text="@string/register"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_marginRight="10dip"
-                android:layout_weight="1"
-                android:background="@drawable/em_button_login_bg"
+                android:background="#4AA747"
                 android:gravity="center"
                 android:onClick="login"
                 android:paddingBottom="7dp"
@@ -124,6 +98,20 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
         </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <Button
+                android:id="@+id/bt_register"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:background="#FFFFFF"
+                android:layout_centerHorizontal="true"
+                android:text="注册"
+                android:gravity="center"
+                android:layout_marginBottom="5dp"/>
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>
