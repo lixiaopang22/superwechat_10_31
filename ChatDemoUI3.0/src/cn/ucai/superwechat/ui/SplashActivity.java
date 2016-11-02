@@ -2,14 +2,16 @@ package cn.ucai.superwechat.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.User;
 
-import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.utils.L;
+import cn.ucai.superwechat.utils.MFGT;
 
 /**
  * 开屏页
@@ -31,8 +33,7 @@ public class SplashActivity extends BaseActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-
-		new Thread(new Runnable() {
+		new Handler().postDelayed(new Runnable() {
 			public void run() {
 				if (SuperWeChatHelper.getInstance().isLoggedIn()) {
 					// auto login mode, make sure all group and conversation is loaed before enter the main screen
@@ -60,12 +61,12 @@ public class SplashActivity extends BaseActivity {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
 					}
-					startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+					//startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+					MFGT.startActivity(mContext,GuideActivity.class);
 					finish();
 				}
 			}
-		}).start();
-
+		},sleepTime);
 	}
 	
 	/**
