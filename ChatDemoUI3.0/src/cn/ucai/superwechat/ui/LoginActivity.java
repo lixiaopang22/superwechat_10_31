@@ -278,4 +278,12 @@ public class LoginActivity extends BaseActivity {
     public void onClick() {
         MFGT.finish(this);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(pd!=null){
+            pd.dismiss();
+        }
+    }
 }
