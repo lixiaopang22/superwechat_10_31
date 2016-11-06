@@ -36,7 +36,7 @@ import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.NetDao;
 import cn.ucai.superwechat.data.OkHttpUtils;
 import cn.ucai.superwechat.utils.CommonUtils;
-import cn.ucai.superwechat.utils.MD5;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
 
 /**
@@ -64,6 +64,7 @@ public class RegisterActivity extends BaseActivity {
     String pwd;
     String confirm_pwd;
 
+    private static String TAG=RegisterActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +122,7 @@ public class RegisterActivity extends BaseActivity {
                     pd.dismiss();
                 } else {
                     if (result.isRetMsg()) {
+                        L.e(TAG,"registerAppServer="+result);
                         registerEMServer();
                     } else {
                         if (result.getRetCode() == I.MSG_REGISTER_USERNAME_EXISTS) {
@@ -162,7 +164,7 @@ public class RegisterActivity extends BaseActivity {
             public void run() {
                 try {
                     // call method in SDK
-                    EMClient.getInstance().createAccount(username, MD5.getMessageDigest(pwd));
+                    EMClient.getInstance().createAccount(username,pwd);
                     runOnUiThread(new Runnable() {
                         public void run() {
                             if (!RegisterActivity.this.isFinishing())
