@@ -99,9 +99,11 @@ public class ContactListFragment extends EaseContactListFragment {
     @SuppressWarnings("unchecked")
     @Override
     protected void setUpView() {
-        titleBar.setRightImageResource(R.drawable.em_add);
+//        titleBar.setRightImageResource(R.drawable.em_add);
+        titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        titleBar.setVisibility(View.GONE);
         titleBar.setRightLayoutClickListener(new OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(getActivity(), AddContactActivity.class));
@@ -114,6 +116,7 @@ public class ContactListFragment extends EaseContactListFragment {
             m = (Map<String, EaseUser>) ((Hashtable<String, EaseUser>)m).clone();
         }
         setContactsMap(m);
+
         super.setUpView();
         listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -128,7 +131,7 @@ public class ContactListFragment extends EaseContactListFragment {
             }
         });
 
-        
+
         // 进入添加好友页
         titleBar.getRightLayout().setOnClickListener(new OnClickListener() {
 
@@ -137,17 +140,17 @@ public class ContactListFragment extends EaseContactListFragment {
                 startActivity(new Intent(getActivity(), AddContactActivity.class));
             }
         });
-        
-        
+
+
         contactSyncListener = new ContactSyncListener();
         SuperWeChatHelper.getInstance().addSyncContactListener(contactSyncListener);
-        
+
         blackListSyncListener = new BlackListSyncListener();
         SuperWeChatHelper.getInstance().addSyncBlackListListener(blackListSyncListener);
-        
+
         contactInfoSyncListener = new ContactInfoSyncListener();
         SuperWeChatHelper.getInstance().getUserProfileManager().addSyncContactInfoListener(contactInfoSyncListener);
-        
+
         if (SuperWeChatHelper.getInstance().isContactsSyncedWithServer()) {
             loadingView.setVisibility(View.GONE);
         } else if (SuperWeChatHelper.getInstance().isSyncingContactsWithServer()) {
