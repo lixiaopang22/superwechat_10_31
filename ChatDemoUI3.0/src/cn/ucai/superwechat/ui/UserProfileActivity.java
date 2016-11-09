@@ -23,13 +23,20 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.utils.EaseImageUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.bean.Result;
@@ -214,7 +221,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 break;
             case REQUESTCODE_CUTTING:
                 if (data != null) {
-                    setPicToView(data);
+                    updateUserAvatar(data);
+//                    setPicToView(data);
                 }
                 break;
             default:
@@ -222,6 +230,38 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    private void updateUserAvatar(final Intent picData) {
+        dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
+        dialog.show();
+        File file=saveBitmapFile(picData);
+        NetDao.updateUserAvatar(mContetxt, user.getMUserName(), file, new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                if(s!=null){
+                    Result result = ResultUtils.getResultFromJson(s, User.class);
+                    if(result!=null && result.isRetMsg()){
+                        User u= (User) result.getRetData();
+                        SuperWeChatHelper.getInstance().saveAppContact(u);
+                        setPicToView(picData);
+                    }else{
+                        dialog.dismiss();
+                        CommonUtils.showShortToast(R.string.toast_updatephoto_fail);
+                    }
+                }else{
+                    dialog.dismiss();
+                    CommonUtils.showShortToast(R.string.toast_updatephoto_fail);
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                L.e(TAG,"error="+error);
+                CommonUtils.showShortToast(R.string.toast_updatephoto_fail);
+            }
+        });
+    }
+
 
     public void startPhotoZoom(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
@@ -247,13 +287,16 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             Bitmap photo = extras.getParcelable("data");
             Drawable drawable = new BitmapDrawable(getResources(), photo);
             ivUserinfoAvatar.setImageDrawable(drawable);
-            uploadUserAvatar(Bitmap2Bytes(photo));
+            dialog.dismiss();
+            Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
+                    Toast.LENGTH_SHORT).show();
+//            uploadUserAvatar(Bitmap2Bytes(photo));
         }
 
     }
 
     private void uploadUserAvatar(final byte[] data) {
-        dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
+
         new Thread(new Runnable() {
 
             @Override
@@ -321,5 +364,26 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 CommonUtils.showShortToast(R.string.User_name_cannot_be_modify);
                 break;
         }
+    }
+    public File saveBitmapFile(Intent picData){
+        Bundle extras=picData.getExtras();
+        if(extras!=null){
+            Bitmap bitmap=extras.getParcelable("data");
+            String imagePath= EaseImageUtils.getImagePath(user.getMUserName()+ I.AVATAR_SUFFIX_JPG);
+            File file=new File(imagePath);
+            L.e(TAG,"file path="+file.getAbsolutePath());
+            try{
+                BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(file));
+                bitmap.compress(Bitmap.CompressFormat.PNG,100,out);
+                out.flush();
+                out.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return file;
+        }
+        return null;
     }
 }

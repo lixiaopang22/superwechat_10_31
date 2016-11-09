@@ -25,7 +25,7 @@
                 android:id="@+id/layout_userinfo_avatar"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:background="@drawable/setting_item_selector"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp">

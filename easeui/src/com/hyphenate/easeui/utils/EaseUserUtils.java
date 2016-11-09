@@ -117,7 +117,7 @@ public class EaseUserUtils {
         }
     }
 
-    public static void setCurrentAppUserAvatar(FragmentActivity activity, ImageView imageView) {
+    public static void  setCurrentAppUserAvatar(FragmentActivity activity, ImageView imageView) {
         String username = EMClient.getInstance().getCurrentUser();
         setAppUserAvatar(activity, username, imageView);
     }
