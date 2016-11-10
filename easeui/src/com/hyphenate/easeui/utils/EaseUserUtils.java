@@ -141,4 +141,7 @@ public class EaseUserUtils {
         textView.setText(suffix+username);
     }
 
+    public static void setAppUsernameWithNo(String username,TextView textView) {
+        setAppUserName("微信号：",username,textView);
+    }
 }
