@@ -9,6 +9,8 @@ import com.hyphenate.easeui.domain.User;
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.ui.AddContactActivity;
+import cn.ucai.superwechat.ui.AddFriendActivity;
+import cn.ucai.superwechat.ui.FriendProfileActivity;
 import cn.ucai.superwechat.ui.LoginActivity;
 import cn.ucai.superwechat.ui.RegisterActivity;
 import cn.ucai.superwechat.ui.SettingsActivity;
@@ -55,8 +57,14 @@ public class MFGT {
     }
     public static void gotoFriendProfile(Activity context,User user){
         Intent intent = new Intent();
-        intent.setClass(context, AddContactActivity.class);
+        intent.setClass(context, FriendProfileActivity.class);
         intent.putExtra(I.User.USER_NAME,user);
+        startActivity(context,intent);
+    }
+    public static void gotoAddFriendMsg(Activity context,String username){
+        Intent intent = new Intent();
+        intent.setClass(context, AddFriendActivity.class);
+        intent.putExtra(I.User.USER_NAME,username);
         startActivity(context,intent);
     }
 }

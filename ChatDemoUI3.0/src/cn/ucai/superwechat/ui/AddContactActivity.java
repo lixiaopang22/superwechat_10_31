@@ -34,21 +34,25 @@ import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.NetDao;
 import cn.ucai.superwechat.data.OkHttpUtils;
+import cn.ucai.superwechat.utils.CommonUtils;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.utils.ResultUtils;
 
 public class AddContactActivity extends BaseActivity {
-    @BindView(R.id.img_back)
-    ImageView imgBack;
     @BindView(R.id.txt_title)
     TextView txtTitle;
     @BindView(R.id.ed_username)
     EditText edUsername;
+    @BindView(R.id.img_back)
+    ImageView imgBack;
     @BindView(R.id.txt_right)
     TextView txtRight;
     private String toAddUsername;
     private ProgressDialog progressDialog;
-    User user=null;
+    User user = null;
+
+    private static final String TAG=AddContactActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,45 +72,48 @@ public class AddContactActivity extends BaseActivity {
 
     /**
      * search contact
-     *
-     * @param v
      */
-    public void searchContact(View v) {
+    public void searchContact() {
         final String name = edUsername.getText().toString().trim();
-
-            toAddUsername = name;
-            if (TextUtils.isEmpty(name)) {
-                new EaseAlertDialog(this, R.string.Please_enter_a_username).show();
-                return;
-            }
-
-            progressDialog = new ProgressDialog(this);
-            String stri = getResources().getString(R.string.addcontact_search);
-            progressDialog.setMessage(stri);
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
-        searchAppUser();
+        toAddUsername = name;
+        if (TextUtils.isEmpty(name)) {
+            new EaseAlertDialog(this, R.string.Please_enter_a_username).show();
+            return;
         }
+        progressDialog = new ProgressDialog(this);
+        String str = getResources().getString(R.string.addcontact_search);
+        progressDialog.setMessage(str);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+        searchAppUser();
+    }
 
     private void searchAppUser() {
         NetDao.searchUser(this, toAddUsername, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
                 progressDialog.dismiss();
-                if(s!=null){
+                L.e(TAG,"searchAppUser,result="+s);
+                if (s != null) {
                     Result result = ResultUtils.getResultFromJson(s, User.class);
-                    if(result!=null && result.isRetMsg()){
-                        user= (User) result.getRetData();
-                        if(user!=null){
-                            MFGT.gotoFriendProfile(AddContactActivity.this,user);
+                    if (result != null && result.isRetMsg()) {
+                        user = (User) result.getRetData();
+                        if (user != null) {
+                            MFGT.gotoFriendProfile(AddContactActivity.this, user);
                         }
+                    }else{
+                        CommonUtils.showShortToast(R.string.search_user_fail);
                     }
+                }else{
+                    CommonUtils.showShortToast(R.string.search_user_fail);
                 }
             }
 
             @Override
             public void onError(String error) {
-                    progressDialog.dismiss();
+                L.e(TAG,"error="+error);
+                progressDialog.dismiss();
+                CommonUtils.showShortToast(R.string.search_user_fail);
             }
         });
     }
@@ -131,7 +138,6 @@ public class AddContactActivity extends BaseActivity {
             new EaseAlertDialog(this, R.string.This_user_is_already_your_friend).show();
             return;
         }
-
 
 
         new Thread(new Runnable() {
@@ -161,8 +167,6 @@ public class AddContactActivity extends BaseActivity {
         }).start();
     }
 
-
-
     @OnClick({R.id.img_back, R.id.txt_right})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -170,6 +174,7 @@ public class AddContactActivity extends BaseActivity {
                 MFGT.finish(this);
                 break;
             case R.id.txt_right:
+                searchContact();
                 break;
         }
     }
