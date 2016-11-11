@@ -334,7 +334,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
 //                } else
                       if (currentTabIndex == 1) {
                       if(contactListFragment != null) {
-                        contactListFragment.refresh();
+//                        contactListFragment.refresh();
                     }
                 }
                 String action = intent.getAction();

@@ -183,14 +183,16 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         NetDao.updateNick(mContetxt, user.getMUserName(), nickName, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
-                Result result = ResultUtils.getResultFromJson(s, User.class);
-                if(result!=null && result.isRetMsg()){
-                    User u = (User) result.getRetData();
-                    updateLocatUser(u);
-                }else{
-                    Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
-                            .show();
-                    dialog.dismiss();
+                if (s != null) {
+                    Result result = ResultUtils.getResultFromJson(s, User.class);
+                    if (result != null && result.isRetMsg()) {
+                        User u = (User) result.getRetData();
+                        updateLocatUser(u);
+                    } else {
+                        Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
+                                .show();
+                        dialog.dismiss();
+                    }
                 }
             }
 

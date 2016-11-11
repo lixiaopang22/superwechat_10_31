@@ -47,6 +47,7 @@ public class FriendProfileActivity extends BaseActivity {
         user = (User) getIntent().getSerializableExtra(I.User.USER_NAME);
         if (user == null) {
             MFGT.finish(this);
+            return;
         }
         initView();
     }
@@ -88,6 +89,7 @@ public class FriendProfileActivity extends BaseActivity {
             case R.id.send_video:
                 break;
             case R.id.send_message:
+                MFGT.gotoChat(this,user.getMUserName());
                 break;
         }
     }
