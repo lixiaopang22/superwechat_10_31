@@ -124,7 +124,7 @@ public class ContactListFragment extends EaseContactListFragment {
         setContactsMap(m);
 
         super.setUpView();
-        listView.setOnItemClickListener(new OnItemClickListener() {
+        listView.setOnItemClickListener( new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
