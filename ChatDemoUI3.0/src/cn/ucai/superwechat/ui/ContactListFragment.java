@@ -105,9 +105,9 @@ public class ContactListFragment extends EaseContactListFragment {
     @SuppressWarnings("unchecked")
     @Override
     protected void setUpView() {
-//        titleBar.setRightImageResource(R.drawable.em_add);
+        titleBar.setRightImageResource(R.drawable.em_add);
         titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        titleBar.setVisibility(View.GONE);
+        hideTitleBar();
         titleBar.setRightLayoutClickListener(new OnClickListener() {
 
             @Override
